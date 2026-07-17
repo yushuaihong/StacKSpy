@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <Platforms>x86;x64</Platforms>
+    <ApplicationIcon />
+    <AssemblyName>StacKSpy.App</AssemblyName>
+    <RootNamespace>StacKSpy.App</RootNamespace>
+    <AnalysisLevel>none</AnalysisLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\StacKSpy.Bridge\StacKSpy.Bridge.vcxproj" />
+  </ItemGroup>
+</Project>

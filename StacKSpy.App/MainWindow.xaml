@@ -1,0 +1,63 @@
+<Window x:Class="StacKSpy.App.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:views="clr-namespace:StacKSpy.App.Views"
+        Title="StacKSpy - 股票监控系统" Height="600" Width="900"
+        WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- 顶部工具栏 -->
+        <ToolBar Grid.Row="0" Background="#F0F0F0">
+            <Button x:Name="BtnSwitchMini" Content="切换小窗口" Click="BtnSwitchMini_Click" Margin="5,0" />
+            <Separator />
+            <TextBlock Text="刷新间隔(秒):" VerticalAlignment="Center" Margin="5,0" />
+            <TextBox x:Name="TxtRefreshInterval" Width="60" Text="60" Margin="5,0" />
+            <Button Content="应用" Click="BtnApplyConfig_Click" Margin="5,0" />
+        </ToolBar>
+
+        <!-- 主内容区 TabControl -->
+        <TabControl Grid.Row="1" Margin="5">
+            <TabItem Header="实时价格">
+                <views:PriceMonitorView />
+            </TabItem>
+            <TabItem Header="KDJ 指标">
+                <views:KDJMonitorView />
+            </TabItem>
+            <TabItem Header="消息提示">
+                <views:AlertPanel />
+            </TabItem>
+            <TabItem Header="股票管理">
+                <Grid Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
+                        <TextBlock Text="股票代码:" VerticalAlignment="Center" Margin="0,0,5,0" />
+                        <TextBox x:Name="TxtStockCode" Width="120" Margin="0,0,10,0" />
+                        <Button Content="添加" Click="BtnAddStock_Click" Width="60" Margin="0,0,10,0" />
+                        <Button Content="删除选中" Click="BtnRemoveStock_Click" Width="80" />
+                    </StackPanel>
+                    <DataGrid x:Name="DgStockPool" Grid.Row="1" ItemsSource="{Binding StockPool}" AutoGenerateColumns="False" IsReadOnly="True">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="股票代码" Binding="{Binding Code}" Width="120" />
+                            <DataGridTextColumn Header="股票名称" Binding="{Binding Name}" Width="*" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+        </TabControl>
+
+        <!-- 底部状态栏 -->
+        <StatusBar Grid.Row="2" Background="#E0E0E0">
+            <StatusBarItem>
+                <TextBlock x:Name="TxtStatus" Text="就绪" />
+            </StatusBarItem>
+        </StatusBar>
+    </Grid>
+</Window>

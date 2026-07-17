@@ -1,0 +1,17 @@
+<UserControl x:Class="StacKSpy.App.Views.PriceMonitorView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid Margin="5">
+        <DataGrid x:Name="DgPrices" ItemsSource="{Binding DataContext.Prices, RelativeSource={RelativeSource AncestorType=Window}}" AutoGenerateColumns="False" IsReadOnly="True"
+                  CanUserSortColumns="True" AlternatingRowBackground="#F8F8F8">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="股票代码" Binding="{Binding Code}" Width="100" />
+                <DataGridTextColumn Header="股票名称" Binding="{Binding Name}" Width="120" />
+                <DataGridTextColumn Header="价格" Binding="{Binding Price, StringFormat=F2}" Width="80" />
+                <DataGridTextColumn Header="涨幅(%)" Binding="{Binding ChangePercent, StringFormat=F2}" Width="80" />
+                <DataGridTextColumn Header="换手率(%)" Binding="{Binding TurnoverRate, StringFormat=F2}" Width="90" />
+                <DataGridTextColumn Header="更新时间" Binding="{Binding UpdateTime}" Width="*" />
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</UserControl>

@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "StacKSpy.App": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}
