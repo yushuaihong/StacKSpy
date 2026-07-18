@@ -114,7 +114,9 @@ namespace StacKSpy { namespace Core { namespace Services {
         WinHttpCloseHandle(hSession);
 
         // GBK → UTF-8
-        return GbkBytesToUtf8(rawBody.c_str(), static_cast<int>(rawBody.size()));
+        //return GbkBytesToUtf8(rawBody.c_str(), static_cast<int>(rawBody.size()));
+        // 不需要转移成UTF8
+        return rawBody.c_str();
     }
 
     // ===== 核心：批量获取所有股票实时价格 =====

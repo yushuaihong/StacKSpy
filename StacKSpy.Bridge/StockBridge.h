@@ -33,7 +33,7 @@ namespace StacKSpy { namespace Bridge {
         ManagedKDJIndicator^ CalculateKDJ(System::String^ code, System::String^ period);
         bool AddStock(System::String^ code);
         bool RemoveStock(System::String^ code);
-        System::Collections::Generic::List<System::String^>^ GetStockPool();
+        System::Collections::Generic::List<ManagedStockInfo^>^ GetStockPool();
         bool UpdateConfig(System::String^ key, System::String^ value);
         System::Collections::Generic::List<ManagedAlert^>^ GetAlerts();
 

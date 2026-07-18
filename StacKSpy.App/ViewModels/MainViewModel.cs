@@ -103,13 +103,13 @@ public class MainViewModel : INotifyPropertyChanged
         Application.Current?.Dispatcher.Invoke(() =>
         {
             KDJIndicators.Clear();
-            foreach (var code in pool)
+            foreach (var stock in pool)
             {
-                var kdj = _bridge.CalculateKDJ(code, "Daily");
+                var kdj = _bridge.CalculateKDJ(stock.Code, "Daily");
                 KDJIndicators.Add(new KDJViewModel
                 {
-                    Code = code,
-                    Name = kdj.Name ?? "",
+                    Code = stock.Code ?? "",
+                    Name = stock.Name ?? kdj.Name ?? "",
                     DailyJ = kdj.DailyJ,
                     WeeklyJ = kdj.WeeklyJ,
                     MonthlyJ = kdj.MonthlyJ
@@ -150,9 +150,9 @@ public class MainViewModel : INotifyPropertyChanged
         Application.Current?.Dispatcher.Invoke(() =>
         {
             StockPool.Clear();
-            foreach (var code in pool)
+            foreach (var stock in pool)
             {
-                StockPool.Add(new StockPriceViewModel { Code = code, Name = "" });
+                StockPool.Add(new StockPriceViewModel { Code = stock.Code ?? "", Name = stock.Name ?? "" });
             }
             OnPropertyChanged(nameof(StockPool));
         });

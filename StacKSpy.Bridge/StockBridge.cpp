@@ -237,12 +237,15 @@ namespace StacKSpy { namespace Bridge {
     }
 
     // TODO:
-    System::Collections::Generic::List<System::String^>^ StockBridge::GetStockPool() {
-        auto results = gcnew System::Collections::Generic::List<System::String^>();
+    System::Collections::Generic::List<ManagedStockInfo^>^ StockBridge::GetStockPool() {
+        auto results = gcnew System::Collections::Generic::List<ManagedStockInfo^>();
         if (!m_stockManager || !*m_stockManager) return results;
         auto pool = (*m_stockManager)->GetStockPool();
         for (const auto& info : pool) {
-            results->Add(ToManagedString(info.Code));
+            auto ms = gcnew ManagedStockInfo();
+            ms->Code = ToManagedString(info.Code);
+            ms->Name = ToManagedString(info.Name);
+            results->Add(ms);
         }
         return results;
     }

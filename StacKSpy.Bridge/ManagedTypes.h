@@ -32,4 +32,10 @@ namespace StacKSpy { namespace Bridge {
         property System::String^ Message;
     };
 
+    public ref class ManagedStockInfo {
+    public:
+        property System::String^ Code;
+        property System::String^ Name;
+    };
+
 }}
