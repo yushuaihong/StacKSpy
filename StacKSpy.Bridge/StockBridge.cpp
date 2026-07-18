@@ -8,6 +8,7 @@
 //           通过虚函数指针调用，完全避开 lambda 和 std::function
 
 #include "StockBridge.h"
+#include "Version.h"
 #include "Kernel/MicroKernel.h"
 #include "Kernel/IEventBus.h"
 #include "Services/StockPriceService.h"
@@ -174,6 +175,10 @@ namespace StacKSpy { namespace Bridge {
     void StockBridge::Stop() { (*m_kernel)->Stop(); }
 
     // ===== 桥接方法实现 =====
+
+    System::String^ StockBridge::GetVersion() {
+        return gcnew System::String(STACKSPY_VERSION_FULL);
+    }
 
     System::Collections::Generic::List<ManagedStockPrice^>^ StockBridge::FetchAllPrices() {
         auto results = gcnew System::Collections::Generic::List<ManagedStockPrice^>();

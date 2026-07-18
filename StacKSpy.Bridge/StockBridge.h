@@ -28,6 +28,7 @@ namespace StacKSpy { namespace Bridge {
         void Stop();
 
         // 桥接接口
+        System::String^ GetVersion();
         System::Collections::Generic::List<ManagedStockPrice^>^ FetchAllPrices();
         ManagedKDJIndicator^ CalculateKDJ(System::String^ code, System::String^ period);
         bool AddStock(System::String^ code);

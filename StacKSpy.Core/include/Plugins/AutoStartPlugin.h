@@ -10,7 +10,6 @@ namespace StacKSpy { namespace Core { namespace Plugins {
         AutoStartPlugin(std::shared_ptr<Services::IConfigManager> configManager);
 
         std::string GetName() const override { return "AutoStartPlugin"; }
-        std::string GetVersion() const override { return "1.0.0"; }
         void Initialize() override;
         void Start() override;
         void Stop() override;

@@ -97,6 +97,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Version.h" />
     <ClInclude Include="include\Models\StockPrice.h">
       <Filter>Header Files\Models</Filter>
     </ClInclude>
