@@ -1,5 +1,6 @@
 #pragma once
 #include "Services/IStockManager.h"
+#include "Models/StockInfo.h"
 #include <mutex>
 
 namespace StacKSpy { namespace Core { namespace Services {
@@ -18,7 +19,7 @@ namespace StacKSpy { namespace Core { namespace Services {
     private:
         bool ContainsLocked(const std::string& code) const; // 调用者已持锁
 
-        std::vector<std::string> m_stockPool;
+        std::vector <Models::StockInfo> m_stockPool;
         mutable std::mutex m_mutex;
         std::string m_configPath = "stockpool.json";
     };
