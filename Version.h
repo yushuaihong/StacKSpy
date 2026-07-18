@@ -1,0 +1,25 @@
+#pragma once
+
+// =============================================================
+// StacKSpy 解决方案统一版本定义
+// 修改此文件即可同步更新所有项目的版本号
+// =============================================================
+
+#define STACKSPY_VERSION_MAJOR  1
+#define STACKSPY_VERSION_MINOR  1
+#define STACKSPY_VERSION_PATCH  0
+#define STACKSPY_VERSION_BUILD  "2026-07-16"
+
+// 自动拼接，无需手动修改
+#define STACKSPY_VERSION_STRINGIFY_(x) #x
+#define STACKSPY_VERSION_STRINGIFY(x) STACKSPY_VERSION_STRINGIFY_(x)
+
+#define STACKSPY_VERSION_STRING \
+    STACKSPY_VERSION_STRINGIFY(STACKSPY_VERSION_MAJOR) "." \
+    STACKSPY_VERSION_STRINGIFY(STACKSPY_VERSION_MINOR) "." \
+    STACKSPY_VERSION_STRINGIFY(STACKSPY_VERSION_PATCH)
+
+// 文件版本号（逗号分隔，供 .rc 资源文件使用）
+#define STACKSPY_FILEVERSION  STACKSPY_VERSION_MAJOR,STACKSPY_VERSION_MINOR,STACKSPY_VERSION_PATCH,0
+
+#define STACKSPY_VERSION_FULL  STACKSPY_VERSION_STRING " (" STACKSPY_VERSION_BUILD ")"

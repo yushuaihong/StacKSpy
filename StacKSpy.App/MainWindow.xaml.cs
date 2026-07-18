@@ -11,6 +11,7 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
         DataContext = _vm;
+        Title = $"StacKSpy {App.Bridge?.GetVersion()} - 股票监控系统";
         Loaded += (_, _) => _vm.StartRefresh();
         Closed += (_, _) => _vm.StopRefresh();
     }

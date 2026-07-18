@@ -16,7 +16,6 @@ namespace StacKSpy { namespace Core { namespace Plugins {
                             std::shared_ptr<Scheduler::ITaskScheduler> scheduler);
 
         std::string GetName() const override { return "KDJCalculatorPlugin"; }
-        std::string GetVersion() const override { return "1.0.0"; }
         void Initialize() override;
         void Start() override;
         void Stop() override;

@@ -9,7 +9,31 @@
     <AssemblyName>StacKSpy.App</AssemblyName>
     <RootNamespace>StacKSpy.App</RootNamespace>
     <AnalysisLevel>none</AnalysisLevel>
+    <Company>StacKSpy</Company>
+    <Product>StacKSpy 股票监控系统</Product>
+    <Copyright>Copyright (C) 2026 StacKSpy</Copyright>
+    <!-- 版本号由 Version.h 自动注入，无需手动维护 -->
+    <GenerateAssemblyVersionAttribute>true</GenerateAssemblyVersionAttribute>
+    <GenerateAssemblyFileVersionAttribute>true</GenerateAssemblyFileVersionAttribute>
+    <GenerateAssemblyInformationalVersionAttribute>true</GenerateAssemblyInformationalVersionAttribute>
   </PropertyGroup>
+
+  <!-- 求值期从 Version.h 解析版本号，ReadAllText 在求值时执行，WPF 目标验证前已完成 -->
+  <PropertyGroup>
+    <_VersionH>$([System.IO.File]::ReadAllText('$(SolutionDir)Version.h'))</_VersionH>
+    <_VerMajor>$([System.Text.RegularExpressions.Regex]::Match('$(_VersionH)', 'VERSION_MAJOR\s+(\d+)').Groups.get_Item(1).Value)</_VerMajor>
+    <_VerMinor>$([System.Text.RegularExpressions.Regex]::Match('$(_VersionH)', 'VERSION_MINOR\s+(\d+)').Groups.get_Item(1).Value)</_VerMinor>
+    <_VerPatch>$([System.Text.RegularExpressions.Regex]::Match('$(_VersionH)', 'VERSION_PATCH\s+(\d+)').Groups.get_Item(1).Value)</_VerPatch>
+    <_VerBuild>$([System.Text.RegularExpressions.Regex]::Match('$(_VersionH)', 'VERSION_BUILD\s+&quot;(.+?)&quot;').Groups.get_Item(1).Value)</_VerBuild>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(_VerMajor)' != ''">
+    <Version>$(_VerMajor).$(_VerMinor).$(_VerPatch)</Version>
+    <AssemblyVersion>$(_VerMajor).$(_VerMinor).$(_VerPatch).0</AssemblyVersion>
+    <FileVersion>$(_VerMajor).$(_VerMinor).$(_VerPatch).0</FileVersion>
+    <InformationalVersion>$(_VerMajor).$(_VerMinor).$(_VerPatch) ($(_VerBuild))</InformationalVersion>
+  </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\StacKSpy.Bridge\StacKSpy.Bridge.vcxproj" />
   </ItemGroup>

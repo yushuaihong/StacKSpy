@@ -75,7 +75,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;$(SolutionDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem />
@@ -90,7 +90,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;$(SolutionDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem />
@@ -105,7 +105,7 @@
       <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;$(SolutionDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem />
@@ -120,7 +120,7 @@
       <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;$(SolutionDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem />
@@ -129,48 +129,145 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\Models\StockPrice.cpp" />
-    <ClCompile Include="src\Models\KDJIndicator.cpp" />
-    <ClCompile Include="src\Models\Alert.cpp" />
-    <ClCompile Include="src\Services\StockPriceService.cpp" />
-    <ClCompile Include="src\Services\KDJCalculator.cpp" />
-    <ClCompile Include="src\Services\AlertEngine.cpp" />
-    <ClCompile Include="src\Services\StockManager.cpp" />
-    <ClCompile Include="src\Services\ConfigManager.cpp" />
-    <ClCompile Include="src\Kernel\EventBus.cpp" />
-    <ClCompile Include="src\Kernel\PluginManager.cpp" />
-    <ClCompile Include="src\Kernel\MicroKernel.cpp" />
-    <ClCompile Include="src\Plugins\StockPricePlugin.cpp" />
-    <ClCompile Include="src\Plugins\KDJCalculatorPlugin.cpp" />
-    <ClCompile Include="src\Plugins\AlertPlugin.cpp" />
-    <ClCompile Include="src\Plugins\StockManagerPlugin.cpp" />
-    <ClCompile Include="src\Plugins\ConfigPlugin.cpp" />
-    <ClCompile Include="src\Plugins\AutoStartPlugin.cpp" />
-    <ClCompile Include="src\Scheduler\TaskScheduler.cpp" />
+    <ClCompile Include="src\Models\StockPrice.cpp">
+      <Filter>Source Files\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Models\KDJIndicator.cpp">
+      <Filter>Source Files\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Models\Alert.cpp">
+      <Filter>Source Files\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Services\StockPriceService.cpp">
+      <Filter>Source Files\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Services\KDJCalculator.cpp">
+      <Filter>Source Files\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Services\AlertEngine.cpp">
+      <Filter>Source Files\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Services\StockManager.cpp">
+      <Filter>Source Files\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Services\ConfigManager.cpp">
+      <Filter>Source Files\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Kernel\EventBus.cpp">
+      <Filter>Source Files\Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Kernel\PluginManager.cpp">
+      <Filter>Source Files\Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Kernel\MicroKernel.cpp">
+      <Filter>Source Files\Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Plugins\StockPricePlugin.cpp">
+      <Filter>Source Files\Plugins</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Plugins\KDJCalculatorPlugin.cpp">
+      <Filter>Source Files\Plugins</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Plugins\AlertPlugin.cpp">
+      <Filter>Source Files\Plugins</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Plugins\StockManagerPlugin.cpp">
+      <Filter>Source Files\Plugins</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Plugins\ConfigPlugin.cpp">
+      <Filter>Source Files\Plugins</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Plugins\AutoStartPlugin.cpp">
+      <Filter>Source Files\Plugins</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scheduler\TaskScheduler.cpp">
+      <Filter>Source Files\Scheduler</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\Models\StockPrice.h" />
-    <ClInclude Include="include\Models\KDJIndicator.h" />
-    <ClInclude Include="include\Models\Alert.h" />
-    <ClInclude Include="include\Services\IStockPriceService.h" />
-    <ClInclude Include="include\Services\IKDJCalculator.h" />
-    <ClInclude Include="include\Services\IAlertEngine.h" />
-    <ClInclude Include="include\Services\IStockManager.h" />
-    <ClInclude Include="include\Services\IConfigManager.h" />
-    <ClInclude Include="include\Kernel\IEventBus.h" />
-    <ClInclude Include="include\Kernel\IPluginManager.h" />
-    <ClInclude Include="include\Kernel\EventBus.h" />
-    <ClInclude Include="include\Kernel\PluginManager.h" />
-    <ClInclude Include="include\Kernel\MicroKernel.h" />
-    <ClInclude Include="include\Plugins\IPlugin.h" />
-    <ClInclude Include="include\Plugins\StockPricePlugin.h" />
-    <ClInclude Include="include\Plugins\KDJCalculatorPlugin.h" />
-    <ClInclude Include="include\Plugins\AlertPlugin.h" />
-    <ClInclude Include="include\Plugins\StockManagerPlugin.h" />
-    <ClInclude Include="include\Plugins\ConfigPlugin.h" />
-    <ClInclude Include="include\Plugins\AutoStartPlugin.h" />
-    <ClInclude Include="include\Scheduler\ITaskScheduler.h" />
-    <ClInclude Include="include\Scheduler\TaskScheduler.h" />
+    <ClInclude Include="..\Version.h" />
+    <ClInclude Include="include\Models\StockInfo.h" />
+    <ClInclude Include="include\Models\StockPrice.h">
+      <Filter>Header Files\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Models\KDJIndicator.h">
+      <Filter>Header Files\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Models\Alert.h">
+      <Filter>Header Files\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Services\IStockPriceService.h">
+      <Filter>Header Files\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Services\IKDJCalculator.h">
+      <Filter>Header Files\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Services\IAlertEngine.h">
+      <Filter>Header Files\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Services\IStockManager.h">
+      <Filter>Header Files\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Services\StockManager.h">
+      <Filter>Header Files\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Services\IConfigManager.h">
+      <Filter>Header Files\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Services\StockPriceService.h">
+      <Filter>Header Files\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Services\KDJCalculator.h">
+      <Filter>Header Files\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Services\AlertEngine.h">
+      <Filter>Header Files\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Services\ConfigManager.h">
+      <Filter>Header Files\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Kernel\IEventBus.h">
+      <Filter>Header Files\Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Kernel\IPluginManager.h">
+      <Filter>Header Files\Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Kernel\EventBus.h">
+      <Filter>Header Files\Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Kernel\PluginManager.h">
+      <Filter>Header Files\Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Kernel\MicroKernel.h">
+      <Filter>Header Files\Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Plugins\IPlugin.h">
+      <Filter>Header Files\Plugins</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Plugins\StockPricePlugin.h">
+      <Filter>Header Files\Plugins</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Plugins\KDJCalculatorPlugin.h">
+      <Filter>Header Files\Plugins</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Plugins\AlertPlugin.h">
+      <Filter>Header Files\Plugins</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Plugins\StockManagerPlugin.h">
+      <Filter>Header Files\Plugins</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Plugins\ConfigPlugin.h">
+      <Filter>Header Files\Plugins</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Plugins\AutoStartPlugin.h">
+      <Filter>Header Files\Plugins</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Scheduler\ITaskScheduler.h">
+      <Filter>Header Files\Scheduler</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Scheduler\TaskScheduler.h">
+      <Filter>Header Files\Scheduler</Filter>
+    </ClInclude>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

@@ -8,6 +8,7 @@
 //           通过虚函数指针调用，完全避开 lambda 和 std::function
 
 #include "StockBridge.h"
+#include "Version.h"
 #include "Kernel/MicroKernel.h"
 #include "Kernel/IEventBus.h"
 #include "Services/StockPriceService.h"
@@ -141,7 +142,7 @@ namespace StacKSpy { namespace Bridge {
         auto priceService = std::make_shared<Core::Services::StockPriceService>();
         auto kdjCalculator = std::make_shared<Core::Services::KDJCalculator>();
         auto alertEngine = std::make_shared<Core::Services::AlertEngine>();
-        auto stockManager = std::make_shared<Core::Services::StockManager>();
+        auto stockManager = std::make_shared<Core::Services::StockManager>(priceService.get());
 
         // 设置股票池文件路径为 exe 目录
         stockManager->SetConfigPath(GetModuleDir() + "stockpool.json");
@@ -175,11 +176,20 @@ namespace StacKSpy { namespace Bridge {
 
     // ===== 桥接方法实现 =====
 
+    System::String^ StockBridge::GetVersion() {
+        return gcnew System::String(STACKSPY_VERSION_FULL);
+    }
+
     System::Collections::Generic::List<ManagedStockPrice^>^ StockBridge::FetchAllPrices() {
         auto results = gcnew System::Collections::Generic::List<ManagedStockPrice^>();
         if (!m_stockManager || !*m_stockManager || !m_priceService || !*m_priceService) return results;
 
-        auto codes = (*m_stockManager)->GetStockPool();
+        auto pool = (*m_stockManager)->GetStockPool();
+        std::vector<std::string> codes;
+        codes.reserve(pool.size());
+        for (const auto& info : pool) {
+            codes.push_back(info.Code);
+        }
         auto prices = (*m_priceService)->FetchAllPrices(codes);
 
         for (const auto& p : prices) {
@@ -226,12 +236,16 @@ namespace StacKSpy { namespace Bridge {
         return ok;
     }
 
-    System::Collections::Generic::List<System::String^>^ StockBridge::GetStockPool() {
-        auto results = gcnew System::Collections::Generic::List<System::String^>();
+    // TODO:
+    System::Collections::Generic::List<ManagedStockInfo^>^ StockBridge::GetStockPool() {
+        auto results = gcnew System::Collections::Generic::List<ManagedStockInfo^>();
         if (!m_stockManager || !*m_stockManager) return results;
         auto pool = (*m_stockManager)->GetStockPool();
-        for (const auto& code : pool) {
-            results->Add(ToManagedString(code));
+        for (const auto& info : pool) {
+            auto ms = gcnew ManagedStockInfo();
+            ms->Code = ToManagedString(info.Code);
+            ms->Name = ToManagedString(info.Name);
+            results->Add(ms);
         }
         return results;
     }

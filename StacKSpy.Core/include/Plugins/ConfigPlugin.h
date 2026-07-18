@@ -12,7 +12,6 @@ namespace StacKSpy { namespace Core { namespace Plugins {
                      std::shared_ptr<Kernel::IEventBus> eventBus);
 
         std::string GetName() const override { return "ConfigPlugin"; }
-        std::string GetVersion() const override { return "1.0.0"; }
         void Initialize() override;
         void Start() override;
         void Stop() override;
