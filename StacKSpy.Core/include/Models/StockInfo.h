@@ -8,7 +8,8 @@ namespace StacKSpy { namespace Core { namespace Models {
 				std::string Name;
 
 				StockInfo() = default;
-				StockInfo(const std::string& code, const std::string& name);
+				StockInfo(const std::string& code, const std::string& name)
+					: Code(code), Name(name) {}
 			};
 		}
 	}

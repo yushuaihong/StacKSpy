@@ -5,7 +5,7 @@
 // 修改此文件即可同步更新所有项目的版本号
 // =============================================================
 
-#define STACKSPY_VERSION_MAJOR  0
+#define STACKSPY_VERSION_MAJOR  1
 #define STACKSPY_VERSION_MINOR  1
 #define STACKSPY_VERSION_PATCH  0
 #define STACKSPY_VERSION_BUILD  "2026-07-16"
