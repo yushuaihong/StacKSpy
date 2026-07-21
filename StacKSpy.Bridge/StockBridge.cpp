@@ -140,7 +140,7 @@ namespace StacKSpy { namespace Bridge {
 
         // 创建服务实例并保存到 Bridge 成员
         auto priceService = std::make_shared<Core::Services::StockPriceService>();
-        auto kdjCalculator = std::make_shared<Core::Services::KDJCalculator>();
+        auto kdjCalculator = std::make_shared<Core::Services::KDJCalculator>(priceService.get());
         auto alertEngine = std::make_shared<Core::Services::AlertEngine>();
         auto stockManager = std::make_shared<Core::Services::StockManager>(priceService.get());
 
@@ -236,7 +236,7 @@ namespace StacKSpy { namespace Bridge {
         return ok;
     }
 
-    // TODO:
+    // 获取股票池信息
     System::Collections::Generic::List<ManagedStockInfo^>^ StockBridge::GetStockPool() {
         auto results = gcnew System::Collections::Generic::List<ManagedStockInfo^>();
         if (!m_stockManager || !*m_stockManager) return results;

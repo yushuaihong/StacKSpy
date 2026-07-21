@@ -39,6 +39,9 @@
     <Filter Include="Header Files\Scheduler">
       <UniqueIdentifier>{D0E1F2A3-B4C5-3D4E-7F8A-9B0C1D2E3F4A}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\ThirdParty">
+      <UniqueIdentifier>{E1F2A3B4-C5D6-4E5F-8A9B-0C1D2E3F4A5B}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Models\StockPrice.cpp">
@@ -181,6 +184,12 @@
     </ClInclude>
     <ClInclude Include="include\Models\StockInfo.h">
       <Filter>Header Files\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Models\KLineData.h">
+      <Filter>Header Files\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ThirdParty\nlohmann\json.hpp">
+      <Filter>Header Files\ThirdParty</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
