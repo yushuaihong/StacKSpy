@@ -1,4 +1,5 @@
 #include "Services/StockPriceService.h"
+#include "ThirdParty/nlohmann/json.hpp"
 #include <chrono>
 #include <ctime>
 #include <sstream>
@@ -38,9 +39,12 @@ namespace StacKSpy { namespace Core { namespace Services {
         return result;
     }
 
-    // ===== 辅助：股票代码 → 市场前缀（sh/sz） =====
+    // ===== 辅助：股票代码 → 市场前缀（sh/sz/hk）=====
     static std::string GetMarketPrefix(const std::string& code) {
         if (code.empty()) return "sh";
+        // 5位纯数字 = 港股
+        if (code.size() == 5 && code[0] >= '0' && code[0] <= '9')
+            return "hk";
         // 6开头=上海, 9开头=上海B股, 5开头=上海基金
         if (code[0] == '6' || code[0] == '9' || code[0] == '5')
             return "sh";
@@ -174,8 +178,7 @@ namespace StacKSpy { namespace Core { namespace Services {
                 price.Price          = std::stod(fields[3]);
                 price.ChangePercent  = (fields.size() > 32) ? std::stod(fields[32]) : 0.0;
                 price.TurnoverRate   = (fields.size() > 38) ? std::stod(fields[38]) : 0.0;
-                price.UpdateTime     = (fields.size() > 30 && !fields[30].empty())
-                                       ? fields[30] : currentTime;
+                price.UpdateTime     = currentTime;
             } catch (...) {
                 // 解析异常，跳过该条数据
                 continue;
@@ -204,6 +207,109 @@ namespace StacKSpy { namespace Core { namespace Services {
         if (fields.size() < 2 || fields[1].empty()) return code;
 
         return fields[1];
+    }
+
+    // ===== 辅助：HTTP GET 请求（腾讯 appstock K线接口）=====
+    // 接口: http://web.ifzq.gtimg.cn/appstock/app/kline/kline?param=sh600519,day,,,50
+    // 返回 UTF-8 JSON
+    static std::string HttpGetAppstock(const std::string& path) {
+        std::wstring wHost = Utf8ToWide("web.ifzq.gtimg.cn");
+        std::wstring wPath = Utf8ToWide(path);
+
+        HINTERNET hSession = WinHttpOpen(L"StacKSpy/1.0",
+            WINHTTP_ACCESS_TYPE_DEFAULT_PROXY,
+            WINHTTP_NO_PROXY_NAME, WINHTTP_NO_PROXY_BYPASS, 0);
+        if (!hSession) return {};
+
+        HINTERNET hConnect = WinHttpConnect(hSession, wHost.c_str(), INTERNET_DEFAULT_HTTP_PORT, 0);
+        if (!hConnect) { WinHttpCloseHandle(hSession); return {}; }
+
+        HINTERNET hRequest = WinHttpOpenRequest(hConnect, L"GET", wPath.c_str(),
+            nullptr, WINHTTP_NO_REFERER, WINHTTP_DEFAULT_ACCEPT_TYPES, 0);
+        if (!hRequest) { WinHttpCloseHandle(hConnect); WinHttpCloseHandle(hSession); return {}; }
+
+        WinHttpSetTimeouts(hRequest, 5000, 5000, 10000, 10000);
+
+        if (!WinHttpSendRequest(hRequest, WINHTTP_NO_ADDITIONAL_HEADERS, 0, WINHTTP_NO_REQUEST_DATA, 0, 0, 0)) {
+            WinHttpCloseHandle(hRequest); WinHttpCloseHandle(hConnect); WinHttpCloseHandle(hSession);
+            return {};
+        }
+
+        if (!WinHttpReceiveResponse(hRequest, nullptr)) {
+            WinHttpCloseHandle(hRequest); WinHttpCloseHandle(hConnect); WinHttpCloseHandle(hSession);
+            return {};
+        }
+
+        DWORD statusCode = 0;
+        DWORD size = sizeof(statusCode);
+        WinHttpQueryHeaders(hRequest, WINHTTP_QUERY_STATUS_CODE | WINHTTP_QUERY_FLAG_NUMBER,
+            WINHTTP_HEADER_NAME_BY_INDEX, &statusCode, &size, WINHTTP_NO_HEADER_INDEX);
+        if (statusCode != 200) {
+            WinHttpCloseHandle(hRequest); WinHttpCloseHandle(hConnect); WinHttpCloseHandle(hSession);
+            return {};
+        }
+
+        // appstock 返回 UTF-8，无需编码转换
+        std::string rawBody;
+        DWORD bytesRead = 0;
+        char buffer[4096];
+        while (WinHttpReadData(hRequest, buffer, sizeof(buffer), &bytesRead) && bytesRead > 0) {
+            rawBody.append(buffer, bytesRead);
+            bytesRead = 0;
+        }
+
+        WinHttpCloseHandle(hRequest);
+        WinHttpCloseHandle(hConnect);
+        WinHttpCloseHandle(hSession);
+        return rawBody;
+    }
+
+    // ===== 获取K线数据（支持A股+港股，日/周/月）=====
+    std::vector<Models::KLineData> StockPriceService::FetchKLine(
+        const std::string& code, const std::string& period, int count) {
+        std::vector<Models::KLineData> results;
+        if (code.empty()) return results;
+
+        std::string market = GetMarketPrefix(code);
+        std::string symbol = market + code;
+
+        // 构建请求: /appstock/app/kline/kline?param=sh600519,day,,,50&r=0.123
+        std::string path = "/appstock/app/kline/kline?param="
+            + symbol + "," + period + ",,," + std::to_string(count) + "&r=0.123";
+
+        std::string responseBody = HttpGetAppstock(path);
+        if (responseBody.empty()) return results;
+
+        try {
+            auto json = nlohmann::json::parse(responseBody);
+            if (json.value("code", -1) != 0) return results;
+
+            auto& data = json["data"];
+            // data 的 key 是 symbol（如 sh600519 或 hk00700）
+            auto it = data.find(symbol);
+            if (it == data.end()) return results;
+
+            // K线数组在 period key 下（如 "day", "week", "month"）
+            auto klineIt = it->find(period);
+            if (klineIt == it->end()) return results;
+
+            for (const auto& item : *klineIt) {
+                if (!item.is_array() || item.size() < 6) continue;
+                Models::KLineData kd;
+                kd.Date   = item[0].get<std::string>();
+                kd.Open   = std::stod(item[1].get<std::string>());
+                kd.Close  = std::stod(item[2].get<std::string>());
+                kd.High   = std::stod(item[3].get<std::string>());
+                kd.Low    = std::stod(item[4].get<std::string>());
+                kd.Volume = std::stod(item[5].get<std::string>());
+                results.push_back(kd);
+            }
+        } catch (...) {
+            // JSON 解析异常，返回空
+            return {};
+        }
+
+        return results;
     }
 
 }}}

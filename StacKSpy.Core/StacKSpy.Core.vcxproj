@@ -187,6 +187,7 @@
   <ItemGroup>
     <ClInclude Include="..\Version.h" />
     <ClInclude Include="include\Models\StockInfo.h" />
+    <ClInclude Include="include\Models\KLineData.h" />
     <ClInclude Include="include\Models\StockPrice.h">
       <Filter>Header Files\Models</Filter>
     </ClInclude>
@@ -217,6 +218,7 @@
     <ClInclude Include="include\Services\StockPriceService.h">
       <Filter>Header Files\Services</Filter>
     </ClInclude>
+    <ClInclude Include="include\ThirdParty\nlohmann\json.hpp" />
     <ClInclude Include="include\Services\KDJCalculator.h">
       <Filter>Header Files\Services</Filter>
     </ClInclude>
