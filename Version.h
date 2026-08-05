@@ -6,7 +6,7 @@
 // =============================================================
 
 #define STACKSPY_VERSION_MAJOR  1
-#define STACKSPY_VERSION_MINOR  1
+#define STACKSPY_VERSION_MINOR  2
 #define STACKSPY_VERSION_PATCH  1
 #define STACKSPY_VERSION_BUILD  "2026-07-21"
 

@@ -1,6 +1,9 @@
 #pragma once
 #include "ManagedTypes.h"
 #include <memory>
+#include <map>
+#include <string>
+#include "Models/KDJIndicator.h"
 
 namespace StacKSpy { namespace Core { namespace Kernel { class MicroKernel; }}}
 namespace StacKSpy { namespace Core { namespace Services {
@@ -54,6 +57,7 @@ namespace StacKSpy { namespace Bridge {
         std::shared_ptr<Core::Services::IStockPriceService>* m_priceService;
         std::shared_ptr<Core::Services::IKDJCalculator>* m_kdjCalculator;
         std::shared_ptr<Core::Services::IAlertEngine>* m_alertEngine;
+        std::map<std::string, Core::Models::KDJIndicator>* m_kdjCache;
     };
 
 }}

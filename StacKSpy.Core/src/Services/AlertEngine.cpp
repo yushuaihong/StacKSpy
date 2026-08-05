@@ -19,7 +19,7 @@ namespace StacKSpy { namespace Core { namespace Services {
         {
             return Models::AlertLevel::Medium;
         }
-        if (jValue <= 5.0)
+        if (jValue < 10.0)
         {
             return Models::AlertLevel::Low;
         }

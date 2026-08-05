@@ -15,6 +15,7 @@
 #include "Services/KDJCalculator.h"
 #include "Services/AlertEngine.h"
 #include "Services/StockManager.h"
+#include "Models/KDJIndicator.h"
 #include "Plugins/StockPricePlugin.h"
 #include "Plugins/KDJCalculatorPlugin.h"
 #include "Plugins/AlertPlugin.h"
@@ -25,6 +26,18 @@
 
 using namespace System;
 using namespace System::Runtime::InteropServices;
+
+// std::map 迭代在 /clr 下有问题，用原生函数辅助
+#pragma unmanaged
+static void EvaluateAllCachedKDJ(
+    std::map<std::string, StacKSpy::Core::Models::KDJIndicator>& cache,
+    StacKSpy::Core::Services::IAlertEngine& engine)
+{
+    for (auto it = cache.begin(); it != cache.end(); ++it) {
+        engine.Evaluate(it->second);
+    }
+}
+#pragma managed
 
 namespace StacKSpy { namespace Bridge {
 
@@ -85,6 +98,7 @@ namespace StacKSpy { namespace Bridge {
         m_priceService = nullptr;
         m_kdjCalculator = nullptr;
         m_alertEngine = nullptr;
+        m_kdjCache = new std::map<std::string, Core::Models::KDJIndicator>();
     }
 
     StockBridge::~StockBridge() { this->!StockBridge(); }
@@ -114,6 +128,7 @@ namespace StacKSpy { namespace Bridge {
         delete m_priceService; m_priceService = nullptr;
         delete m_kdjCalculator; m_kdjCalculator = nullptr;
         delete m_alertEngine; m_alertEngine = nullptr;
+        delete m_kdjCache; m_kdjCache = nullptr;
 
         for (int i = 0; i < 3; ++i) {
             if (s_dispatchers[i]) {
@@ -212,6 +227,12 @@ namespace StacKSpy { namespace Bridge {
 
         std::string nativeCode = ToNativeString(code);
         auto kdj = (*m_kdjCalculator)->Calculate(nativeCode);
+
+        // 缓存 KDJ 结果，供 GetAlerts 评估使用
+        if (m_kdjCache) {
+            (*m_kdjCache)[nativeCode] = kdj;
+        }
+
         result->Name = ToManagedString(kdj.StockName);
         result->DailyJ = kdj.DailyJ;
         result->WeeklyJ = kdj.WeeklyJ;
@@ -263,6 +284,11 @@ namespace StacKSpy { namespace Bridge {
     System::Collections::Generic::List<ManagedAlert^>^ StockBridge::GetAlerts() {
         auto results = gcnew System::Collections::Generic::List<ManagedAlert^>();
         if (!m_alertEngine || !*m_alertEngine) return results;
+
+        // 用缓存的 KDJ 数据重新评估告警
+        if (m_kdjCache) {
+            EvaluateAllCachedKDJ(*m_kdjCache, **m_alertEngine);
+        }
 
         auto alerts = (*m_alertEngine)->GetActiveAlerts();
         for (const auto& a : alerts) {
