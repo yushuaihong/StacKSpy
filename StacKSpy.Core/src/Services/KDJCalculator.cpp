@@ -18,7 +18,10 @@ namespace StacKSpy { namespace Core { namespace Services {
     // D = 2/3 * 前D + 1/3 * K    (初始值50)
     // J = 3K - 2D
     double KDJCalculator::ComputeJ(const std::vector<Models::KLineData>& klines) {
-        if (klines.empty()) return 50.0;
+        if (klines.empty())
+        {
+            return 50.0;
+        }
 
         const int period = 9;
         double k = 50.0;
