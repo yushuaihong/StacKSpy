@@ -76,6 +76,11 @@
     <Style TargetType="TabItem">
         <Setter Property="Background" Value="{StaticResource DarkBackground}" />
         <Setter Property="Foreground" Value="{StaticResource DarkForeground}" />
+        <Style.Triggers>
+            <Trigger Property="IsSelected" Value="True">
+                <Setter Property="Background" Value="{StaticResource DarkSurface}" />
+            </Trigger>
+        </Style.Triggers>
     </Style>
 
     <!-- ToolBar 样式 -->
