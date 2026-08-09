@@ -74,13 +74,27 @@
     </Style>
 
     <Style TargetType="TabItem">
-        <Setter Property="Background" Value="{StaticResource DarkBackground}" />
         <Setter Property="Foreground" Value="{StaticResource DarkForeground}" />
-        <Style.Triggers>
-            <Trigger Property="IsSelected" Value="True">
-                <Setter Property="Background" Value="{StaticResource DarkSurface}" />
-            </Trigger>
-        </Style.Triggers>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TabItem">
+                    <Border x:Name="Bd" Background="{StaticResource DarkBackground}"
+                            BorderBrush="{StaticResource DarkBorder}" BorderThickness="1,1,1,0"
+                            Padding="8,4" Margin="0,0,-1,0" CornerRadius="3,3,0,0">
+                        <ContentPresenter x:Name="ContentSite" ContentSource="Header"
+                                          HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="Bd" Property="Background" Value="{StaticResource DarkSurface}" />
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Bd" Property="Background" Value="#383838" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 
     <!-- ToolBar 样式 -->
