@@ -3,7 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:views="clr-namespace:StacKSpy.App.Views"
         Title="StacKSpy - 股票监控系统" Height="600" Width="900"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        Background="#1E1E1E" Foreground="#D4D4D4">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -12,7 +13,7 @@
         </Grid.RowDefinitions>
 
         <!-- 顶部工具栏 -->
-        <ToolBar Grid.Row="0" Background="#F0F0F0">
+        <ToolBar Grid.Row="0">
             <Button x:Name="BtnSwitchMini" Content="切换小窗口" Click="BtnSwitchMini_Click" Margin="5,0" />
             <Separator />
             <TextBlock Text="刷新间隔(秒):" VerticalAlignment="Center" Margin="5,0" />
@@ -54,7 +55,7 @@
         </TabControl>
 
         <!-- 底部状态栏 -->
-        <StatusBar Grid.Row="2" Background="#E0E0E0">
+        <StatusBar Grid.Row="2">
             <StatusBarItem>
                 <TextBlock x:Name="TxtStatus" Text="就绪" />
             </StatusBarItem>

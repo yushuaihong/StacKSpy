@@ -4,7 +4,8 @@
         Title="StacKSpy" Height="200" Width="300"
         WindowStyle="ToolWindow" Topmost="True"
         WindowStartupLocation="Manual" Left="100" Top="100"
-        MouseLeftButtonDown="Window_MouseLeftButtonDown">
+        MouseLeftButtonDown="Window_MouseLeftButtonDown"
+        Background="#1E1E1E" Foreground="#D4D4D4">
     <Grid Margin="5">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -12,7 +13,11 @@
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" Text="StacKSpy 精简模式" FontWeight="Bold" Margin="0,0,0,5" />
         <DataGrid x:Name="DgMiniPrices" Grid.Row="1" AutoGenerateColumns="False"
-                  IsReadOnly="True" HeadersVisibility="Column" FontSize="11">
+                  IsReadOnly="True" HeadersVisibility="Column" FontSize="11"
+                  Background="#1E1E1E" Foreground="#D4D4D4"
+                  RowBackground="#1E1E1E" AlternatingRowBackground="#2D2D2D"
+                  BorderBrush="#3E3E3E" GridLinesVisibility="Horizontal"
+                  HorizontalGridLinesBrush="#333333">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="名称" Binding="{Binding Name}" Width="70" />
                 <DataGridTextColumn Header="价格" Binding="{Binding Price}" Width="60" />
