@@ -5,8 +5,9 @@
     <UserControl.Resources>
         <converters:JValueToColorConverter x:Key="JValueToColor" />
     </UserControl.Resources>
-    <Grid Margin="5">
-        <ListBox x:Name="LbAlerts" ItemsSource="{Binding DataContext.Alerts, RelativeSource={RelativeSource AncestorType=Window}}" BorderThickness="0">
+    <Grid Margin="5" Background="{StaticResource DarkBackground}">
+        <ListBox x:Name="LbAlerts" ItemsSource="{Binding DataContext.Alerts, RelativeSource={RelativeSource AncestorType=Window}}" BorderThickness="0"
+                 Background="{StaticResource DarkBackground}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Border Padding="8,4" Margin="0,2" CornerRadius="3"

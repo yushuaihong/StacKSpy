@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Grid Margin="5">
         <DataGrid x:Name="DgPrices" ItemsSource="{Binding DataContext.Prices, RelativeSource={RelativeSource AncestorType=Window}}" AutoGenerateColumns="False" IsReadOnly="True"
-                  CanUserSortColumns="True" AlternatingRowBackground="#F8F8F8">
+                  CanUserSortColumns="True">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="股票代码" Binding="{Binding Code}" Width="100" />
                 <DataGridTextColumn Header="股票名称" Binding="{Binding Name}" Width="120" />
