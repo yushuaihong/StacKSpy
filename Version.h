@@ -6,9 +6,9 @@
 // =============================================================
 
 #define STACKSPY_VERSION_MAJOR  1
-#define STACKSPY_VERSION_MINOR  2
+#define STACKSPY_VERSION_MINOR  3
 #define STACKSPY_VERSION_PATCH  1
-#define STACKSPY_VERSION_BUILD  "2026-07-21"
+#define STACKSPY_VERSION_BUILD  "2026-08-15"
 
 // 自动拼接，无需手动修改
 #define STACKSPY_VERSION_STRINGIFY_(x) #x
