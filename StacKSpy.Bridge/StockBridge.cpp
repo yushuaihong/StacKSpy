@@ -23,6 +23,8 @@
 #include "Plugins/ConfigPlugin.h"
 #include "Plugins/AutoStartPlugin.h"
 #include <msclr/gcroot.h>
+#include <algorithm>
+#include <cctype>
 
 using namespace System;
 using namespace System::Runtime::InteropServices;
@@ -244,6 +246,7 @@ namespace StacKSpy { namespace Bridge {
     bool StockBridge::AddStock(System::String^ code) {
         if (!m_stockManager || !*m_stockManager) return false;
         std::string nativeCode = ToNativeString(code);
+        std::transform(nativeCode.begin(), nativeCode.end(), nativeCode.begin(), ::tolower);
         bool ok = (*m_stockManager)->AddStock(nativeCode);
         if (ok) (*m_stockManager)->SaveStockPool();
         return ok;

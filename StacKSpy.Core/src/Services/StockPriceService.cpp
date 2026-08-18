@@ -42,6 +42,12 @@ namespace StacKSpy { namespace Core { namespace Services {
     // ===== 辅助：股票代码 → 市场前缀（sh/sz/hk）=====
     static std::string GetMarketPrefix(const std::string& code) {
         if (code.empty()) return "sh";
+        // 已带 sh/sz/hk 前缀（如 sh000922），返回空，拼接时不重复加
+        if (code.size() > 2) {
+            std::string prefix = code.substr(0, 2);
+            if (prefix == "sh" || prefix == "sz" || prefix == "hk")
+                return "";
+        }
         // 5位纯数字 = 港股
         if (code.size() == 5 && code[0] >= '0' && code[0] <= '9')
             return "hk";
