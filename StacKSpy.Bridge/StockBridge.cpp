@@ -286,7 +286,10 @@ namespace StacKSpy { namespace Bridge {
 
     System::Collections::Generic::List<ManagedAlert^>^ StockBridge::GetAlerts() {
         auto results = gcnew System::Collections::Generic::List<ManagedAlert^>();
-        if (!m_alertEngine || !*m_alertEngine) return results;
+        if (!m_alertEngine || !*m_alertEngine)
+        {
+            return results;
+        }
 
         // 用缓存的 KDJ 数据重新评估告警
         if (m_kdjCache) {
@@ -297,7 +300,7 @@ namespace StacKSpy { namespace Bridge {
         for (const auto& a : alerts) {
             auto ma = gcnew ManagedAlert();
             ma->Code = ToManagedString(a.StockCode);
-            ma->Name = ToManagedString(a.StockName);
+            ma->Name = ToManagedString((*m_stockManager)->GetStockName(a.StockCode));
             ma->JValue = a.JValue;
             ma->Level = static_cast<int>(a.Level);
             ma->Period = ToManagedString(a.Period);

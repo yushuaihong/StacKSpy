@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
@@ -9,7 +10,7 @@ namespace StacKSpy.App.ViewModels;
 
 public class MainViewModel : INotifyPropertyChanged
 {
-    private readonly DispatcherTimer _timer = new() { Interval = TimeSpan.FromSeconds(60) };
+    private readonly System.Timers.Timer _timer = new System.Timers.Timer(60000);
     private readonly StockBridge? _bridge;
 
     public ObservableCollection<StockPriceViewModel> Prices { get; } = new();
@@ -31,7 +32,7 @@ public class MainViewModel : INotifyPropertyChanged
             _bridge.OnAlertTriggered += RefreshAlerts;
         }
 
-        _timer.Tick += (_, _) => RefreshAll();
+        _timer.Elapsed += (_, _) => RefreshAll();
     }
 
     public void StartRefresh()
@@ -48,7 +49,7 @@ public class MainViewModel : INotifyPropertyChanged
     public void SetRefreshInterval(int seconds)
     {
         if (seconds < 5) seconds = 5;
-        _timer.Interval = TimeSpan.FromSeconds(seconds);
+        _timer.Interval = seconds * 1000;
     }
 
     public void AddStock(string code)
@@ -96,24 +97,36 @@ public class MainViewModel : INotifyPropertyChanged
 
     private void RefreshKDJ()
     {
-        if (_bridge is null) return;
+        if (_bridge is null)
+        {
+            return;
+        }
         var pool = _bridge.GetStockPool();
-        if (pool.Count == 0) return;
+        if (pool.Count == 0)
+        {
+            return;
+        }
+
+        var datas = new List<KDJViewModel>();
+        foreach (var stock in pool)
+        {
+            var kdj = _bridge.CalculateKDJ(stock.Code, "Daily");
+            datas.Add(new KDJViewModel
+            {
+                Code = stock.Code ?? "",
+                Name = stock.Name ?? kdj.Name ?? "",
+                DailyJ = kdj.DailyJ,
+                WeeklyJ = kdj.WeeklyJ,
+                MonthlyJ = kdj.MonthlyJ
+            });
+        }
 
         Application.Current?.Dispatcher.Invoke(() =>
         {
             KDJIndicators.Clear();
-            foreach (var stock in pool)
+            foreach (var stockData in datas)
             {
-                var kdj = _bridge.CalculateKDJ(stock.Code, "Daily");
-                KDJIndicators.Add(new KDJViewModel
-                {
-                    Code = stock.Code ?? "",
-                    Name = stock.Name ?? kdj.Name ?? "",
-                    DailyJ = kdj.DailyJ,
-                    WeeklyJ = kdj.WeeklyJ,
-                    MonthlyJ = kdj.MonthlyJ
-                });
+                KDJIndicators.Add(stockData);
             }
             OnPropertyChanged(nameof(KDJIndicators));
         });

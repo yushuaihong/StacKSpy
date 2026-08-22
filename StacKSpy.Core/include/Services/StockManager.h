@@ -16,6 +16,8 @@ namespace StacKSpy { namespace Core { namespace Services {
         bool RemoveStock(const std::string& code) override;
         std::vector<Models::StockInfo> GetStockPool() const override;
         bool ContainsStock(const std::string& code) const override;
+        // 通过m_stockPool，遍历返回股票名称
+        std::string GetStockName(const std::string& code) const override;
         void SaveStockPool() override;
         void LoadStockPool() override;
 

@@ -55,6 +55,18 @@ namespace StacKSpy { namespace Core { namespace Services {
         return m_stockPool;
     }
 
+    std::string StockManager::GetStockName(const std::string& code) const {
+        std::lock_guard<std::mutex> lock(m_mutex);
+        for (const Models::StockInfo& stock : m_stockPool) 
+        {
+            if (stock.Code == code) 
+            {
+                return stock.Name;
+            }
+        }
+        return "";
+    }
+
     bool StockManager::ContainsStock(const std::string& code) const {
         std::lock_guard<std::mutex> lock(m_mutex);
         return ContainsLocked(code);
